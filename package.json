@@ -1,0 +1,30 @@
+{
+  "name": "go2dts",
+  "version": "0.0.1",
+  "description": "Simple tool to extract go struct to typescript definition",
+  "main": "src/index.js",
+  "bin": {
+    "go2dts": "bin/go2dts.js"
+  },
+  "scripts": {
+    "start": "nodemon bin/go2dts.js __tests__/inputs __tests__/outputs",
+    "test": "jest"
+  },
+  "keywords": [
+    "go",
+    "cli-tools",
+    "typescript"
+  ],
+  "author": "Fabien BERNARD<fabien@contiamo.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.16.0",
+    "mkdirp": "^0.5.1",
+    "nodemon": "^1.18.3"
+  },
+  "devDependencies": {
+    "@types/node": "^10.5.2",
+    "jest": "^23.4.1",
+    "rimraf": "^2.6.2"
+  }
+}
