@@ -4,6 +4,8 @@
  * Source: editor.go
  **/
 
+export type Time = string
+
 export type EditorStageStatus = "todo" | "running" | "done" | "failed"
 
 export type EditorState = "unknown" | "failed" | "starting" | "does not exist" | "running" | "stopping" | "stopped" | "resuming" | "destroying"

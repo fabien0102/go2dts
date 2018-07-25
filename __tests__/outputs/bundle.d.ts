@@ -4,6 +4,10 @@
  * Source: bundle.go
  **/
 
+export type Time = string
+
+export type UUID = string
+
 export interface RegisterBundleRequest {
   name: string
   gitUrl: string

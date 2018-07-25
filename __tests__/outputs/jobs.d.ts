@@ -4,6 +4,10 @@
  * Source: jobs.go
  **/
 
+export type Time = string
+
+export type UUID = string
+
 export type TriggerType = "user" | "apikey" | "schedule" | "webhook" | "unknown"
 
 export interface JobResponse {

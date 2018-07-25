@@ -7,6 +7,10 @@ exports[`go2dts bundle.d.ts should match the snapshot 1`] = `
  * Source: bundle.go
  **/
 
+export type Time = string
+
+export type UUID = string
+
 export interface RegisterBundleRequest {
   name: string
   gitUrl: string
@@ -97,6 +101,8 @@ exports[`go2dts editor.d.ts should match the snapshot 1`] = `
  * Source: editor.go
  **/
 
+export type Time = string
+
 export type EditorStageStatus = \\"todo\\" | \\"running\\" | \\"done\\" | \\"failed\\"
 
 export type EditorState = \\"unknown\\" | \\"failed\\" | \\"starting\\" | \\"does not exist\\" | \\"running\\" | \\"stopping\\" | \\"stopped\\" | \\"resuming\\" | \\"destroying\\"
@@ -127,6 +133,10 @@ exports[`go2dts functions.d.ts should match the snapshot 1`] = `
  *
  * Source: functions.go
  **/
+
+export type Time = string
+
+export type UUID = string
 
 export interface FunctionResponse {
   id?: UUID
@@ -174,6 +184,10 @@ exports[`go2dts jobs.d.ts should match the snapshot 1`] = `
  *
  * Source: jobs.go
  **/
+
+export type Time = string
+
+export type UUID = string
 
 export type TriggerType = \\"user\\" | \\"apikey\\" | \\"schedule\\" | \\"webhook\\" | \\"unknown\\"
 
@@ -293,6 +307,10 @@ exports[`go2dts secrets.d.ts should match the snapshot 1`] = `
  *
  * Source: secrets.go
  **/
+
+export type Time = string
+
+export type UUID = string
 
 export interface CreateSecretRequest {
   bundleId: UUID

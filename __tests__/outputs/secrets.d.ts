@@ -4,6 +4,10 @@
  * Source: secrets.go
  **/
 
+export type Time = string
+
+export type UUID = string
+
 export interface CreateSecretRequest {
   bundleId: UUID
   name: string

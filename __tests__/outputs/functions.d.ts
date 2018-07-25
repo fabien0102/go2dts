@@ -4,6 +4,10 @@
  * Source: functions.go
  **/
 
+export type Time = string
+
+export type UUID = string
+
 export interface FunctionResponse {
   id?: UUID
   createdAt: Time
