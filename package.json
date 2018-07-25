@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "nodemon bin/go2dts.js __tests__/inputs __tests__/outputs",
+    "start:onefile": "nodemon bin/go2dts.js __tests__/inputs __tests__/outputs/labs.types.d.ts",
     "test": "jest"
   },
   "keywords": [
