@@ -1,6 +1,6 @@
 # Go2dts
 
-A simple cli-tools to transform golang `struct` to typescript `interface`
+A simple cli-tools to transform golang `struct` and `const` to typescript `interface` and `type`
 
 ### Installation
 
@@ -11,14 +11,16 @@ npm i -g go2dts
 ### Usage
 
 ```bash
-go2dts <goLangDir> <typescriptDir>
+go2dts <goLangDirs ...> <typescriptFile>
 ```
 
-### Testing
+### Testing and developing
 
-Just put your golang file into `__tests__/inputs` and it will be parse each time you execute `npm test`.
+Just put your golang file into `__tests__/inputs` and it will be parse each time you execute `npm test` or `npm start`.
 
-By default, every output files have a jest snapshot associate, so you can update the broken snapshot to what you want and start developing ;)
+`npm start` is more quick, so perfect to add some console.log and improve the parsing.
+
+`npm test --watch` generate a snapshot, so you can just update this one to the expecting state and start coding to have everything green #TDDStyle
 
 ### Know issues
 
