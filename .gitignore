@@ -131,3 +131,7 @@ $RECYCLE.BIN/
 
 
 # End of https://www.gitignore.io/api/macos,node,windows
+
+# Test outputs
+
+__tests__/outputs
