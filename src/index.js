@@ -109,11 +109,16 @@ function parseParameter(i) {
 
     const optional = /\*/.test(t) || i.includes("omitempty");
     const isArray = /\[\]/.test(t);
+    const isMap = /map\[(\w*)\](\w*)/.exec(t);
 
-    let type = t.replace(/[\[\]\*]|types\./g, "") + (isArray ? "[]" : "");
+    let type = isMap
+      ? `{[key: ${isMap[1]}]: ${isMap[2]}}`
+      : t.replace(/[\[\]\*]|types\./g, "") + (isArray ? "[]" : "");
+
     if (goToTsMap[type]) type = goToTsMap[type];
     return { type, name, optional };
   } catch (e) {
+    console.log(e);
     console.log(`${i} can't be parsed`);
   }
 }
