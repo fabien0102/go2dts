@@ -1,5 +1,7 @@
 # Go2dts
 
+![logo](assets/go2dts-200w.png)
+
 A simple cli-tools to transform golang `struct` and `const` to typescript `interface` and `type`
 
 ### Installation
