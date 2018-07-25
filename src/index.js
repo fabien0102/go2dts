@@ -50,7 +50,7 @@ const go2dts = (srcFolders, outFile) => {
         }
 
         // Extract struct
-        const structRegex = /type\ (\w*)\ struct\ {([a-zA-Z .,-`":\n\t\[\]\*]*)}/gm;
+        const structRegex = /type\ (\w*)\ struct\ {([a-zA-Z .,-`"':\n\t\[\]\*]*)}/gm;
         let m;
         while ((m = structRegex.exec(data)) !== null) {
           const name = m[1];
