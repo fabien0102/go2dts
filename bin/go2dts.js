@@ -11,10 +11,13 @@ const package = JSON.parse(
 
 program
   .version(package.version)
-  .usage("<inputDir> <outputDirOrFile>")
-  .action((inputDir, outputDirOrFile) => {
+  .usage("<inputDirs ...> <outputDirOrFile>")
+  .action((...args) => {
     const currentDir = process.cwd();
-    go2dts(join(currentDir, inputDir), join(currentDir, outputDirOrFile));
+    const inputDirs = args.slice(0, -2).map(i => join(currentDir, i));
+    const outputDirOrFile = join(currentDir, args[args.length - 2]);
+
+    go2dts(inputDirs, outputDirOrFile);
     console.log(`Types definition created into ${outputDirOrFile}`);
   })
   .parse(process.argv);

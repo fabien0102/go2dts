@@ -2,117 +2,92 @@ const { readFileSync, readdirSync, writeFileSync } = require("fs");
 const mkdirp = require("mkdirp");
 const { join } = require("path");
 
-const go2dts = (srcFolder, outFolderOrFile) => {
+const go2dts = (srcFolders, outFile) => {
   let output = "";
-  const oneFile = /\.ts$/.test(outFolderOrFile);
 
   // Flags to inject string aliases
   let haveUUID = false;
   let haveTime = false;
 
-  readdirSync(srcFolder)
-    .filter(fileName => /^[a-z]+(?!test)\.go$/.test(fileName))
-    .forEach(fileName => {
-      const data = readFileSync(join(srcFolder, fileName), "utf-8");
-      let isEmpty = true;
+  srcFolders.forEach(srcFolder =>
+    readdirSync(srcFolder)
+      .filter(fileName => /^[a-z]+(?!test)\.go$/.test(fileName))
+      .forEach(fileName => {
+        const data = readFileSync(join(srcFolder, fileName), "utf-8");
+        let isEmpty = true;
 
-      if (!oneFile) {
-        output = "";
-        haveUUID = false;
-        haveTime = false;
-      }
-
-      // Extract const
-      const constRegex = /const \(([a-zA-Z\/ =,"\n\t\.()]*)\)/gm;
-      let n;
-      while ((n = constRegex.exec(data)) !== null) {
-        output +=
-          n[1]
-            .split("\n")
-            .filter(i => i.trim() !== "" && !i.startsWith("\t// "))
-            .reduce((mem, line, i) => {
-              const haveType = line.split(" =")[0].split(" ").length > 1;
-              const type = line.split(" =")[0].split(" ")[1];
-              const previousType = i > 0 ? mem[mem.length - 1].type : "";
-              if (haveType && type !== previousType) {
-                mem.push({
-                  type,
-                  values: [line.split(`"`)[1]]
-                });
-              } else {
-                try {
-                  mem[mem.length - 1].values.push(line.split(`"`)[1]);
-                  isEmpty = false;
-                } catch (e) {
-                  // functional error if the first line `const` don't have any type
-                  // we don't want to export this kind values for now
-                  // (it's not an enum pattern)
+        // Extract const
+        const constRegex = /const \(([a-zA-Z\/ =,"\n\t\.()]*)\)/gm;
+        let n;
+        while ((n = constRegex.exec(data)) !== null) {
+          output +=
+            n[1]
+              .split("\n")
+              .filter(i => i.trim() !== "" && !i.startsWith("\t// "))
+              .reduce((mem, line, i) => {
+                const haveType = line.split(" =")[0].split(" ").length > 1;
+                const type = line.split(" =")[0].split(" ")[1];
+                const previousType = i > 0 ? mem[mem.length - 1].type : "";
+                if (haveType && type !== previousType) {
+                  mem.push({
+                    type,
+                    values: [line.split(`"`)[1]]
+                  });
+                } else {
+                  try {
+                    mem[mem.length - 1].values.push(line.split(`"`)[1]);
+                    isEmpty = false;
+                  } catch (e) {
+                    // functional error if the first line `const` don't have any type
+                    // we don't want to export this kind values for now
+                    // (it's not an enum pattern)
+                  }
                 }
-              }
-              return mem;
-            }, [])
-            .map(i => `export type ${i.type} = "${i.values.join(`" | "`)}"`)
-            .join("\n\n") + "\n\n";
-      }
-
-      // Extract struct
-      const structRegex = /type\ (\w*)\ struct\ {([a-zA-Z .,-`":\n\t\[\]\*]*)}/gm;
-      let m;
-      while ((m = structRegex.exec(data)) !== null) {
-        const name = m[1];
-        const details = m[2]
-          .split("\n")
-          .filter(i => i.trim() !== "" && i.includes("json"))
-          .map(parseParameter);
-
-        if (details.length === 0) {
-          continue;
-        } else {
-          isEmpty = false;
-          const values = details.map(({ type }) => type).join(",");
-          haveTime = haveTime || values.includes("Time");
-          haveUUID = haveUUID || values.includes("UUID");
+                return mem;
+              }, [])
+              .map(i => `export type ${i.type} = "${i.values.join(`" | "`)}"`)
+              .join("\n\n") + "\n\n";
         }
 
-        output += `export interface ${name} {`;
-        output +=
-          "\n" +
-          details
-            .filter(d => !d.internal)
-            .map(d => `  ${d.name}${d.optional ? "?" : ""}: ${d.type}`)
-            .join("\n");
-        output += "\n}\n\n";
-      }
+        // Extract struct
+        const structRegex = /type\ (\w*)\ struct\ {([a-zA-Z .,-`":\n\t\[\]\*]*)}/gm;
+        let m;
+        while ((m = structRegex.exec(data)) !== null) {
+          const name = m[1];
+          const details = m[2]
+            .split("\n")
+            .filter(i => i.trim() !== "" && i.includes("json"))
+            .map(parseParameter);
 
-      if (!oneFile && !isEmpty) {
-        let outputPrepend = "/** \n";
-        outputPrepend += " * Generated by go2dts\n";
-        outputPrepend += " *\n";
-        outputPrepend += " * Source: " + fileName + "\n";
-        outputPrepend += " **/\n\n";
+          if (details.length === 0) {
+            continue;
+          } else {
+            isEmpty = false;
+            const values = details.map(({ type }) => type).join(",");
+            haveTime = haveTime || values.includes("Time");
+            haveUUID = haveUUID || values.includes("UUID");
+          }
 
-        if (haveTime) outputPrepend += "export type Time = string\n\n";
-        if (haveUUID) outputPrepend += "export type UUID = string\n\n";
+          output += `export interface ${name} {`;
+          output +=
+            "\n" +
+            details
+              .filter(d => !d.internal)
+              .map(d => `  ${d.name}${d.optional ? "?" : ""}: ${d.type}`)
+              .join("\n");
+          output += "\n}\n\n";
+        }
+      })
+  );
 
-        output = outputPrepend + output;
-        mkdirp.sync(outFolderOrFile);
-        writeFileSync(
-          join(outFolderOrFile, fileName.replace(".go", ".d.ts")),
-          output
-        );
-      }
-    });
+  let outputPrepend = "/** \n * Generated by go2dts\n **/\n\n";
 
-  if (oneFile) {
-    let outputPrepend = "/** \n * Generated by go2dts\n **/\n\n";
+  if (haveTime) outputPrepend += "export type Time = string\n\n";
+  if (haveUUID) outputPrepend += "export type UUID = string\n\n";
 
-    if (haveTime) outputPrepend += "export type Time = string\n\n";
-    if (haveUUID) outputPrepend += "export type UUID = string\n\n";
-
-    output = outputPrepend + output;
-    mkdirp.sync(join(outFolderOrFile, "../"));
-    writeFileSync(outFolderOrFile, output);
-  }
+  output = outputPrepend + output;
+  mkdirp.sync(join(outFile, "../"));
+  writeFileSync(outFile, output);
 };
 
 function parseParameter(i) {
@@ -135,7 +110,7 @@ function parseParameter(i) {
     const optional = /\*/.test(t) || i.includes("omitempty");
     const isArray = /\[\]/.test(t);
 
-    let type = t.replace(/[\[\]\*]/g, "") + (isArray ? "[]" : "");
+    let type = t.replace(/[\[\]\*]|types\./g, "") + (isArray ? "[]" : "");
     if (goToTsMap[type]) type = goToTsMap[type];
     return { type, name, optional };
   } catch (e) {
