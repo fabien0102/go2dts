@@ -17,7 +17,7 @@ const go2dts = (srcFolders, outFile) => {
         let isEmpty = true;
 
         // Extract const
-        const constRegex = /const \(([a-zA-Z\/ =,"\n\t\.()]*)\)/gm;
+        const constRegex = /const \(([a-zA-Z\/ =,"\-\n\t\.()]*)\)/gm;
         let n;
         while ((n = constRegex.exec(data)) !== null) {
           output +=
