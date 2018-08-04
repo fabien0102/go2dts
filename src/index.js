@@ -90,6 +90,11 @@ const go2dts = (srcFolders, outFile) => {
   writeFileSync(outFile, output);
 };
 
+function parseArray(i) {
+  const isArray = /\[\]/.test(i);
+  return i.replace(/[\[\]\*]|types\./g, "") + (isArray ? "[]" : "");
+}
+
 function parseParameter(i) {
   if (i.includes(`json:"-"`)) return { internal: true };
 
@@ -108,12 +113,11 @@ function parseParameter(i) {
     };
 
     const optional = /\*/.test(t) || i.includes("omitempty");
-    const isArray = /\[\]/.test(t);
-    const isMap = /map\[(\w*)\](\w*)/.exec(t);
+    const isMap = /map\[(\w*)\](.*)/.exec(t);
 
     let type = isMap
-      ? `{[key: ${isMap[1]}]: ${isMap[2]}}`
-      : t.replace(/[\[\]\*]|types\./g, "") + (isArray ? "[]" : "");
+      ? `{[key: ${isMap[1]}]: ${parseArray(isMap[2])}}`
+      : parseArray(t);
 
     if (goToTsMap[type]) type = goToTsMap[type];
     return { type, name, optional };

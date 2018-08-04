@@ -87,6 +87,11 @@ export interface BundleSyncResponse {
   updated: boolean
 }
 
+export interface jsonErrorMessage {
+  errors: string[]
+  fieldErrors: {[key: string]: string[]}
+}
+
 
 
 export type EditorStageStatus = \\"todo\\" | \\"running\\" | \\"done\\" | \\"failed\\"
@@ -154,6 +159,8 @@ export interface FunctionListResponse {
 
 export type TriggerType = \\"user\\" | \\"apikey\\" | \\"schedule\\" | \\"webhook\\" | \\"unknown\\"
 
+export type ExecutionState = \\"unknown\\" | \\"failed\\" | \\"success\\" | \\"running\\"
+
 export interface JobResponse {
   id: string
   lastRunAt?: Time
@@ -203,6 +210,7 @@ export interface ExecutionResponse {
   startedAt: Time
   completedAt?: Time
   success: boolean
+  status: ExecutionState
   specification: JobSpecification
   triggeredBy: TriggeredBy
 }
