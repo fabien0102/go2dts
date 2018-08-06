@@ -1,6 +1,7 @@
 const { readFileSync, readdirSync, writeFileSync } = require("fs");
 const mkdirp = require("mkdirp");
 const { join } = require("path");
+const { pascal } = require("case");
 
 const go2dts = (srcFolders, outFile) => {
   let output = "";
@@ -68,7 +69,7 @@ const go2dts = (srcFolders, outFile) => {
             haveUUID = haveUUID || values.includes("UUID");
           }
 
-          output += `export interface ${name} {`;
+          output += `export interface ${pascal(name)} {`;
           output +=
             "\n" +
             details

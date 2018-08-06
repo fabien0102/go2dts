@@ -301,7 +301,7 @@ export interface Bundle {
   functions?: {[key: string]: FunctionDefinition}
 }
 
-export interface jsonErrorMessage {
+export interface JsonErrorMessage {
   errors: string[]
   fieldErrors: {[key: string]: string[]}
 }
