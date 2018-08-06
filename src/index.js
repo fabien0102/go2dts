@@ -11,7 +11,7 @@ const go2dts = (srcFolders, outFile) => {
 
   srcFolders.forEach(srcFolder =>
     readdirSync(srcFolder)
-      .filter(fileName => /^[a-z]+(?!test)\.go$/.test(fileName))
+      .filter(fileName => /^[a-zA-Z-_]+(?!test)\.go$/.test(fileName))
       .forEach(fileName => {
         const data = readFileSync(join(srcFolder, fileName), "utf-8");
         let isEmpty = true;

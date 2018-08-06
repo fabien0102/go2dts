@@ -87,11 +87,6 @@ export interface BundleSyncResponse {
   updated: boolean
 }
 
-export interface jsonErrorMessage {
-  errors: string[]
-  fieldErrors: {[key: string]: string[]}
-}
-
 
 
 export type EditorStageStatus = \\"todo\\" | \\"running\\" | \\"done\\" | \\"failed\\"
@@ -235,6 +230,8 @@ export interface LogsResponse {
   data: LogMessage[]
 }
 
+
+
 export interface PageMeta {
   next?: number
   prev?: number
@@ -302,6 +299,11 @@ export interface Bundle {
   edit: EditConfig
   jobs?: {[key: string]: JobDefinition}
   functions?: {[key: string]: FunctionDefinition}
+}
+
+export interface jsonErrorMessage {
+  errors: string[]
+  fieldErrors: {[key: string]: string[]}
 }
 
 "

@@ -176,7 +176,3 @@ type BundleSyncResponse struct {
 	Updated bool   `json:"updated"`
 }
 
-type jsonErrorMessage struct {
-	ErrorMessages []string            `json:"errors"`
-	Fields        map[string][]string `json:"fieldErrors"`
-}
