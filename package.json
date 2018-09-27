@@ -1,6 +1,6 @@
 {
   "name": "go2dts",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Simple tool to extract go struct to typescript definition",
   "main": "src/index.js",
   "bin": {
