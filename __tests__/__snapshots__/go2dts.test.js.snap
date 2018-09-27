@@ -5,6 +5,8 @@ exports[`go2dts should match the snapshot 1`] = `
 
 export type Time = string
 
+export type Timestamp = number
+
 export type UUID = string
 
 export interface RegisterBundleRequest {
@@ -299,6 +301,22 @@ export interface Bundle {
   edit: EditConfig
   jobs?: {[key: string]: JobDefinition}
   functions?: {[key: string]: FunctionDefinition}
+}
+
+export interface UserResp {
+  id?: string
+  name?: string
+  email?: string
+  password?: string
+  tenantId?: string
+  realms?: RealmMinimalResp[]
+  groups?: GroupMinimalResp[]
+  sshKeys?: string[]
+  createdAt?: Timestamp
+  updatedAt?: Timestamp
+  image?: byte[]
+  isAdmin?: boolean
+  isActive?: boolean
 }
 
 export interface JsonErrorMessage {

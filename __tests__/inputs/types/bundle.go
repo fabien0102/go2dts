@@ -85,7 +85,7 @@ type Bundle struct {
 	Version   string                        `json:"apiVersion" yaml:"api_version"`
 	Name      string                        `json:"name"`
 	Edit      EditConfig                    `json:"edit"`
-	Jobs      map[string]JobDefinition       `json:"jobs,omitempty" yaml:"jobs,omitempty"`
+	Jobs      map[string]JobDefinition      `json:"jobs,omitempty" yaml:"jobs,omitempty"`
 	Functions map[string]FunctionDefinition `json:"functions,omitempty" yaml:"functions,omitempty"`
 }
 
