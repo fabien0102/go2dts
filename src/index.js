@@ -121,6 +121,7 @@ function parseParameter(i) {
       "uuid.UUID": "UUID",
       "null.UUID": "UUID | null",
       int: "number",
+      int32: "number",
       uint32: "number",
       int64: "number",
       bool: "boolean"

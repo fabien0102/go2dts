@@ -164,3 +164,18 @@ func (info *BundleInfo) LoadBundle(path string, verbose bool) error {
 
 	return errors.New("Config file not found")
 }
+
+// EditorEvent indicates the events occurred in the editor pod.
+type EditorEvent struct {
+	// Type of this event (Normal, Warning), new types could be added in the future.
+	Type string `json:"type"`
+	// Reason is a short, machine understandable string that gives the reason
+	// for the transition into the object's current status.
+	Reason string `json:"reason"`
+	// Message is a human-readable description of the status of this operation.
+	Message string `json:"message"`
+	// Count is the number of times this event has occurred.
+	Count int32 `json:"count"`
+	// LastTimestamp is the time at which the most recent occurrence of this event was recorded.
+	LastTimestamp time.Time `json:"lastTimestamp"`
+}

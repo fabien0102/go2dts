@@ -303,6 +303,14 @@ export interface Bundle {
   functions?: {[key: string]: FunctionDefinition}
 }
 
+export interface EditorEvent {
+  type: string
+  reason: string
+  message: string
+  count: number
+  lastTimestamp: Time
+}
+
 export interface UserResp {
   id?: string
   name?: string
