@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "case": "^1.5.5",
+    "chalk": "^2.4.1",
     "commander": "^2.16.0",
     "mkdirp": "^0.5.1",
     "nodemon": "^1.18.3"
