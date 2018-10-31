@@ -2,6 +2,7 @@ const { readFileSync, readdirSync, writeFileSync } = require("fs");
 const mkdirp = require("mkdirp");
 const { join } = require("path");
 const { pascal } = require("case");
+const chalk = require("chalk");
 
 const go2dts = (srcFolders, outFile) => {
   let output = "";
@@ -30,23 +31,29 @@ const go2dts = (srcFolders, outFile) => {
               .split("\n")
               .filter(i => i.trim() !== "" && !i.startsWith("\t// "))
               .reduce((mem, line, i) => {
-                const haveType = line.split(" =")[0].split(" ").length > 1;
-                const type = line.split(" =")[0].split(" ")[1];
-                const previousType = i > 0 ? mem[mem.length - 1].type : "";
-                if (haveType && type !== previousType) {
-                  mem.push({
-                    type,
-                    values: [line.split(`"`)[1]]
-                  });
-                } else {
-                  try {
-                    mem[mem.length - 1].values.push(line.split(`"`)[1]);
-                    isEmpty = false;
-                  } catch (e) {
-                    // functional error if the first line `const` don't have any type
-                    // we don't want to export this kind values for now
-                    // (it's not an enum pattern)
+                try {
+                  const haveType = line.split(" =")[0].split(" ").length > 1;
+                  const type = line.split(" =")[0].split(" ")[1];
+                  const previousType = i > 0 ? mem[mem.length - 1].type : "";
+                  if (haveType && type !== previousType) {
+                    mem.push({
+                      type,
+                      values: [line.split(`"`)[1]]
+                    });
+                  } else {
+                    try {
+                      mem[mem.length - 1].values.push(line.split(`"`)[1]);
+                      isEmpty = false;
+                    } catch (e) {
+                      // functional error if the first line `const` don't have any type
+                      // we don't want to export this kind values for now
+                      // (it's not an enum pattern)
+                    }
                   }
+                } catch (e) {
+                  console.log(
+                    `${chalk.yellow("Warning:")} ${n[1]} can't be imported`
+                  );
                 }
                 return mem;
               }, [])
