@@ -43,6 +43,20 @@ type RegisterBundleRequest struct {
 	RealmID  string `json:"realmId"`
 }
 
+// ImportRepository describes a repository selected for the import
+type ImportRepository struct {
+	Name   string `json:"name"`
+	GitURL string `json:"gitUrl"`
+	Branch string `json:"branch"`
+}
+
+// ImportedRepository describes a repository imported in labs
+type ImportedRepository struct {
+	ImportRepository
+	// BundleID is the ID of the created bundle
+	BundleID string `json:"bundleId"`
+}
+
 // IsNonEmpty returns a boolean indicating if any of the PATCHable fields have
 // been set. This can be used to short-cicuit empty requests.
 func (r *RegisterBundleRequest) IsNonEmpty() bool {

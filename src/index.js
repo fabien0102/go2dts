@@ -71,6 +71,9 @@ const go2dts = (srcFolders, outFile) => {
             .filter(i => i.trim() !== "" && i.includes("json"))
             .map(parseParameter);
 
+          const parent = m[2].split("\n").filter(i => i.trim() !== "")[0] || ""
+          const haveParent = Boolean(parent.trim().match(/^[A-Z][a-zA-Z]+$/));
+
           if (details.length === 0) {
             continue;
           } else {
@@ -81,7 +84,7 @@ const go2dts = (srcFolders, outFile) => {
             haveTimestamp = haveTimestamp || values.includes("Timestamp");
           }
 
-          output += `export interface ${pascal(name)} {`;
+          output += `export interface ${pascal(name)} ${haveParent ? `extends ${parent.trim()} ` : ""}{`;
           output +=
             "\n" +
             details

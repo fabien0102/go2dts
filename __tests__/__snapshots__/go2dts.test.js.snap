@@ -17,6 +17,16 @@ export interface RegisterBundleRequest {
   realmId: string
 }
 
+export interface ImportRepository {
+  name: string
+  gitUrl: string
+  branch: string
+}
+
+export interface ImportedRepository extends ImportRepository {
+  bundleId: string
+}
+
 export interface PatchBundleRequest {
   name?: string
   gitUrl?: string
