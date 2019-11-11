@@ -118,7 +118,7 @@ type ExecutionResponse struct {
 	Success       bool             `json:"success"`
 	Status        ExecutionState   `json:"status"`
 	Specification JobSpecification `json:"specification"`
-	TriggeredBy   TriggeredBy      `json:"triggeredBy"`
+	TriggeredBy   TriggeredBy      `db:"-" json:"triggeredBy"`
 }
 
 // GetStatus returns the status value as determined from the other fields of the response:

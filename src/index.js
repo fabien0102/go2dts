@@ -117,7 +117,7 @@ function parseParameter(i) {
       ,
       t,
       name
-    ] = /\t\w* *([a-zA-Z_0-9.*\[\]]+) *`[a-zA-Z:",0-9= ]*json:"(\w+)/.exec(i);
+    ] = /\t\w* *([a-zA-Z_0-9.*\[\]]+) *`[a-zA-Z:",0-9= -]*json:"(\w+)/.exec(i);
     const goToTsMap = {
       "sql.JSONStringArray": "string[]",
       "sql.JSONStringMap": "{[key: string]: string}",
